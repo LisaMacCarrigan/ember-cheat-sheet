@@ -1,0 +1,108 @@
+
+### EMBER CORE CONCEPTS
+
+Route Handler: Renders a template and loads a model that is then available to that template.
+
+Model: Represent persistent state, and typically persist information to a web server. Models outline the attributes of objects.
+
+Components: Consists of two files: A template written in Handlebars, and a source file written in JavaScript. The files have the same name, but the template ends in the Handlebars .hbs extension, and the source file ends in the .js extension. The template defines what the component should look like and the source file controls what functionality that component has. Components are called from within templates, or within the .hbs portion of another component.
+
+Template: Define how information is displayed, and organize the layout of HTML in an application. Ember templates use the syntax of Handlebars templates. Anything that is valid Handlebars syntax is valid Ember syntax. Templates can also display properties provided to them from their context, which is either a component or a route.
+
+
+## APPLICATION AND SETUP STRUCTURE
+
+Ember Application Setup:
+
+Ember builds all the support structures for you.
+It automatically generates app/router.js
+To create a new Ember app and its project folder named app-name enter this command:
+
+$ ember new app-name
+To start the server:
+
+$ ember server
+or shorthand:
+
+$ ember s
+App appears at localhost:4200 and it displays a welcome message.
+
+
+## ROUTES AND TEMPLATES ---------------------
+
+Making a route
+$ember g route [name-of-route]
+Generator creates three new files:
+
+* route handler ( app/routes/name-of-route.js )
+
+* one for the template the route handler will render ( app/templates/name-of-route.hbs )
+
+* a test file ( tests/unit/routes/name-of-route-test.js ) 4… the router file is also touched ( app/router.js )
+
+Index route is special: doesn’t require an entry in the router’s mapping:
+
+$ember g route index
+{{link-to}} Helper
+To create a link:
+
+{{#link-to ‘index’}}Home{{/link-to}}
+
+
+## MODELS --------------------------
+
+Terminology
+Hook: In the Ember.js framework, this refers to a method within an Ember class.
+
+Model Hook: A method added to a route handler responsible for returning model data to that route, and its corresponding template. A model hook looks something like this:
+
+...
+  model() {
+    return rentals;
+  },
+...
+Tips
+If you haven't used the ES6 shorthand method definition syntax before, model() is the same as writing model: function()
+
+To iterate through an array, we can use the {{each}} helper, like this:
+
+{{#each model as |rental|}}
+    <li>{{rental.owner}}</li>
+{{/each}}
+
+## EMBER DATA AND FIREBASE
+
+Ember Data: A model data management library meant to work specifically with Ember. Essentially, it's responsible for dynamically managing models and creating, editing, and deleting instances of the model.
+
+Firebase: Is a cloud database maintained by Google that stores information in JSON format. Visit Firebase's website for more details.
+
+Add-On: Code that extends a framework's functionality but is not part of its core codebase.
+
+Adapters: Code that connects an application to its data store.
+
+Seeding: Pre-loading the database with hard-coded data.
+
+JSON: Stands for JavaScript Object Notation and is a standard format for communicating data between systems.
+
+Tips
+Generally speaking, your table names in Firebase will be a plural model name, and the model hooks in your routes will refer to the singular model name.
+
+
+## COMPONENTS: HIDE/SHOW IMAGE -------------
+
+Component names should be kebab-case (all lowercase separated by a dash). A dash is required in every component name to avoid possible naming conflicts with HTML elements. So rental-tile would be an acceptable component name, but rental would not be.
+
+Components are completely isolated from their surroundings. They do not automatically have access to models and other information within context of the route in which they are called. Anything a component needs from its surroundings must be passed in manually.
+
+When passing objects into a component the name on the left of = always refers to the variable name used within the component. The name on the right refers to the object we're assigning to that variable name.
+
+By default, the {{action}} helper listens for click events. If we place it on a button, the action we denote will be automatically triggered when that button is clicked
+
+## COMPONENTS: DELETE
+
+Creating, deleting and updating objects in our data store should be handled by the route handler rather than within the component**. This component will not delete the object itself. Instead, it sends notification of our intent to delete this rental upwards through the template and into the route handler by calling this.sendAction().
+
+Ember follows the paradigm “Data down, actions up”. Data must be passed downwards from the route, to the template, and into a component (as we did in previous lessons). Actions must be passed through each ‘level’ of the application in a similar fashion, but in the opposite direction: Actions move upwards from the component, to the template, into the route handler.
+
+
+CHECK OUT THE TEXT FOR COMPONENTS: SAVE
